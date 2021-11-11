@@ -2,11 +2,8 @@ package com.example.demo.xlsx;
 
 import com.example.demo.util.DBUtil;
 import com.example.demo.util.XRow;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
 public class DataReader {
@@ -29,14 +26,14 @@ public class DataReader {
 		//获取第一行作为表的注释
 		XRow firstRowData = ReadExcelXLSX.getFirstRowData(new File(filePathName),firstSheet,sheetNum);
 
-
 		//获取数据作为表的内容
-		List<XRow> otherData = ReadExcelXLSX.getOtherData(new File(filePathName), firstRowData,firstSheet,sheetNum);
+		List<XRow> otherData = ReadExcelXLSX.getOtherData(new File(filePathName), firstRowData, firstSheet, sheetNum);
 
 		//创建数据库表,返回表的字段
-		List<String> columnList = DBUtil.createTable(firstRowData,tableName);
+		List<String> columnList = DBUtil.createTable(firstRowData, tableName);
 
 		//插入数据
-		int[] ints = DBUtil.insertRowBatch(columnList, otherData,tableName);
+		int[] ints = DBUtil.insertRowBatch(columnList, otherData, tableName);
+		DBUtil.closeConnection();
 	}
 }

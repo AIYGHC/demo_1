@@ -16,30 +16,31 @@ public class DBUtil {
 	private static String password = "dtauser";
 	private static int count = 5000;
 	private static int numCount = 0;
-
+	private static Connection conn = null;
 
 	private static Connection getConnection() {
-		Connection conn = null;
-		try {
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url, name, password);
-		} catch (ClassNotFoundException e) {
-			System.out.println("can not load jdbc driver" + e);
-		} catch (SQLException e) {
-			System.out.println("get connection failure" + e);
+		if (conn == null) {
+			try {
+				Class.forName(driver);
+				conn = DriverManager.getConnection(url, name, password);
+				System.out.println("连接成功");
+			} catch (ClassNotFoundException e) {
+				System.out.println("can not load jdbc driver" + e);
+			} catch (SQLException e) {
+				System.out.println("get connection failure" + e);
+			}
 		}
+
 		return conn;
 	}
 
-
-
 	/**
 	 * 关闭数据库连接
-	 * @param conn
 	 */
-	private static void closeConnection(Connection conn) {
+	public static void closeConnection() {
 		if (conn != null) {
 			try {
+				System.out.println("关闭连接");
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -96,8 +97,6 @@ public class DBUtil {
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
 		}
 		//返回的是当前的列.
 		return dbColumnList;
@@ -149,8 +148,6 @@ public class DBUtil {
 			a = pst.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
 		}
 		return a;
 	}
@@ -188,8 +185,6 @@ public class DBUtil {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			closeConnection(conn);
 		}
 		//返回-2是执行成功
 		return a;
@@ -216,7 +211,6 @@ public class DBUtil {
 		} finally {
 			try {
 				rs.close();
-				closeConnection(conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

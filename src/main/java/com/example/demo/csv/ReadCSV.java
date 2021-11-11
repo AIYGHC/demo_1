@@ -9,7 +9,7 @@ import java.util.*;
 
 public class ReadCSV {
 	/**
-	 * 获取第一行的数据,作为数据库字段的注释
+	 * 获取第一行的数据,作为数据库字段的注释1
 	 *
 	 * @return
 	 * @throws Exception
@@ -126,7 +126,7 @@ public class ReadCSV {
 			while (in.ready()) {
 				line = in.readLine();
 				//跳过多少行
-				if (j <= l * 50000) {
+				if (j < l * 50000) {
 					j++;
 					continue;
 				}
@@ -139,11 +139,19 @@ public class ReadCSV {
 				XRow xRow = new XRow();
 				xRow.setRowIndex(j + 1);
 				String[] strs = cvsField(line);
+				String[] strings = new String[columnSize];
 				int g = 1;
+				if (strs.length < columnSize) {
+					for (int n = 0; n < strs.length; n++) {
+						strings[n] = strs[n];
+					}
+				} else {
+					strings = strs;
+				}
 				for (int i = 0; i < columnSize; i++) {
 					XCell xCell = new XCell();
 					xCell.setCellIndex(g);
-					xCell.setValue(strs[i]);
+					xCell.setValue(strings[i]);
 					cells.add(xCell);
 					g++;
 				}
