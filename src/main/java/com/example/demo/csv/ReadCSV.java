@@ -112,7 +112,7 @@ public class ReadCSV {
 	 */
 	public static List<XRow> getOtherData(String filePathName, XRow firstRow, List<String> columnList, String tableName,
 			int l) throws Exception {
-
+		String line1 = "";
 		//所有的行数据
 		List<XRow> rows = new ArrayList<>();
 		try {
@@ -124,7 +124,9 @@ public class ReadCSV {
 			//			System.out.println(columnSize);
 			int j = 0;
 			while (in.ready()) {
+
 				line = in.readLine();
+				line1 = line;
 				//跳过多少行
 				if (j < l * 50000) {
 					j++;
@@ -168,6 +170,7 @@ public class ReadCSV {
 			}
 			in.close();
 		} catch (IOException ex) {
+			System.out.println(line1);
 			ex.printStackTrace();
 		}
 
